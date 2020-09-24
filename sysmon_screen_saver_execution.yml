@@ -1,0 +1,37 @@
+title: Screen Saver execution
+id: 951b060c-fe98-11ea-adc1-0242ac120002
+description: Detects execution of any screen saver files (.scr) that are not included default screen saver file names.
+status: experimental
+date: 2020/09/24
+modified:
+author: Christopher Bukavich @darkcaracal
+references:
+    - https://medium.com/@darkcaracal/analysis-of-malicious-screen-saver-files-adb3b7c01939
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1204.002
+    - attack.t1546.002
+logsource:
+    product: windows
+    service: sysmon
+detection:
+    selection:
+        EventID: 1
+    filter_1:
+        Image|endswith: '.scr'
+    filter_2:
+        Image|endswith:
+            -'uwfservicingscr.scr'
+            -'PhotoScreensaver.scr'
+            -'Bubbles.scr'
+            -'Mystify.scr'
+            -'Ribbons.scr'
+            -'ssText3d.scr'
+            -'scrnsave.scr'
+    condition: selection and filter_1 and not filter_2
+fields:
+    - Image
+falsepositives:
+    - Without disabling by GPO screensavers or another method you will see process creation as normal activity. After disabling by GPO process creation should not be occuring with a majority of end users.
+level: medium
