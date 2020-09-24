@@ -1,6 +1,6 @@
 title: Screen Saver execution
-id: 951b060c-fe98-11ea-adc1-0242ac120002
-description: Detects execution of any screen saver files (.scr) that are not included default screen saver file names.
+id: 951b081e-fe98-11ea-adc1-0242ac120002
+description: Detects execution of any screen saver files (.scr). Follow instructions in 'references' section to disable screen savers first by GPO before using this rule.
 status: experimental
 date: 2020/09/24
 modified:
@@ -18,18 +18,8 @@ logsource:
 detection:
     selection:
         EventID: 1
-    filter_1:
         Image|endswith: '.scr'
-    filter_2:
-        Image|endswith:
-            -'uwfservicingscr.scr'
-            -'PhotoScreensaver.scr'
-            -'Bubbles.scr'
-            -'Mystify.scr'
-            -'Ribbons.scr'
-            -'ssText3d.scr'
-            -'scrnsave.scr'
-    condition: selection and filter_1 and not filter_2
+    condition: selection
 fields:
     - Image
 falsepositives:
